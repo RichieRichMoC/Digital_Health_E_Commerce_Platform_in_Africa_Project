@@ -47,7 +47,7 @@ if st.session_state.get("authentication_status"):
         st.header("Dataset Information")
         st.write("- World Development Indicators")
         st.write("- Health, Nutrition & Population")
-        st.write("- Population Estimates")
+        st.write("- Population Projections")
         st.write("- Statistical Performance Indicators")
        
 

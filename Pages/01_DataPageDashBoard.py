@@ -77,6 +77,6 @@ else:
     st.divider()
     show_dataset("Health, Nutrition & Population", df1, "df1")
     st.divider()
-    show_dataset("Population Estimates", df2, "df2")
+    show_dataset("Population Projections", df2, "df2")
     st.divider()
     show_dataset("Statistical Performance Indicators", df3, "df3")
