@@ -5,7 +5,7 @@ from yaml.loader import SafeLoader
 
 # Streamlit page setup
 st.set_page_config(
-    page_title='CHURNGUARD App',
+    page_title='Digital_Health_E_Commerce_Platform_in_Africa_Project',
     page_icon='🏘️',
     layout='wide'
 )
@@ -32,8 +32,8 @@ if st.session_state.get("authentication_status"):
     st.sidebar.success(f"Welcome {st.session_state['name']} 👋")
 
     # MAIN CONTENT
-    st.markdown("<h2 style='color:#0066ff;'>Welcome to the Churn_Guard App 📊</h2>", unsafe_allow_html=True)
-    image_path = './Images/Churn_Guard.webp'
+    st.markdown("<h2 style='color:#0066ff;'>Welcome to the Digital_Health_E_Commerce_Platform_in_Africa_Project Data Analysis </h2>", unsafe_allow_html=True)
+    image_path = './Images/welcomepage.jpeg'
     st.image(image_path, use_container_width=True, output_format="auto")
 
     

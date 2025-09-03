@@ -38,7 +38,7 @@ else:
    def main():
     
     # Access data from session state
-    data = st.session_state.get("data_key", None)
+    data = st.session_state.get("data_key2", None)
     # Check if the user is authenticated
     if data is None:
      st.info('Please Kindly Access the DataPage to Configure your DataSet.')
@@ -51,11 +51,7 @@ else:
 
 
       if data is not None:
-         
-           
-            
-      
-         
+ 
             with st.container():
                      
                      data_df= data

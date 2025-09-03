@@ -10,7 +10,7 @@ import yaml
 from yaml.loader import SafeLoader
  
 st.set_page_config(
-    page_title='Dashboard',
+    page_title='02_World_Development_Indicators',
     page_icon='📈',
     layout='wide'
 )
@@ -38,7 +38,7 @@ else:
    def main():
     
     # Access data from session state
-    data = st.session_state.get("data_key", None)
+    data = st.session_state.get("data_key4", None)
     # Check if the user is authenticated
     if data is None:
      st.info('Please Kindly Access the DataPage to Configure your DataSet.')
@@ -46,9 +46,6 @@ else:
     else: 
       
       table_feature = data.columns.tolist()
-      
-    
-
 
       if data is not None:
  
