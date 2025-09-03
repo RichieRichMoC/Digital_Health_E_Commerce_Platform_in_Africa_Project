@@ -29,15 +29,6 @@ def load_all_data():
         st.error(f"Error loading dataset: {e}")
         return None, None, None, None
 
-# Function to select features by type
-def select_features(feature_type, data_df):
-    if feature_type == 'Numerical Features':
-        return data_df.select_dtypes(include=np.number)
-    elif feature_type == 'Categorical Features':
-        return data_df.select_dtypes(include='object')
-    else:
-        return data_df
-
 # Function to display each dataset separately
 def show_dataset(title, df, key_prefix):
     st.subheader(title)
@@ -46,16 +37,20 @@ def show_dataset(title, df, key_prefix):
         st.error("Dataset could not be loaded.")
         return
 
-    feature_type = st.selectbox(
-        f"Select features for {title}",
-        options=['All Features', 'Numerical Features', 'Categorical Features'],
-        key=f"{key_prefix}_features"
-    )
-
-    if feature_type == 'All Features':
-        st.write(df)
+    # Check if "Series Name" exists in the dataset
+    if "Series Name" in df.columns:
+        unique_series = df["Series Name"].dropna().unique()
+        selected_series = st.selectbox(
+            f"Select Series for {title}",
+            options=unique_series,
+            key=f"{key_prefix}_series"
+        )
+        # Filter the dataset by the chosen series
+        filtered_df = df[df["Series Name"] == selected_series]
+        st.write(filtered_df)
     else:
-        st.write(select_features(feature_type, df))
+        st.warning(f"No 'Series Name' column found in {title}. Showing full dataset.")
+        st.write(df)
 
 
 # Authentication check
@@ -77,7 +72,7 @@ else:
     if df4 is not None:
         st.session_state[DATA_KEY4] = df4
 
-    # Show all datasets with feature selection
+    # Show all datasets with Series Name selection
     show_dataset("World Development Indicators", df4, "df4")
     st.divider()
     show_dataset("Health, Nutrition & Population", df1, "df1")

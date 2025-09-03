@@ -42,28 +42,28 @@ if st.session_state.get("authentication_status"):
 
     with col1:
         st.header("App Information 💬")
-        st.write("Experience the future of telecommunications with our cutting-edge Customer Churn Prediction App! ...")
+        st.write("Access the Data for the Digital_Health_E_Commerce_Platform_in_Africa_Project")
 
         st.header("Dataset Information")
-        st.write("- REGION: The location of each customer")
-        st.write("- TENURE: Number of months the customer has stayed with the company")
-        st.write("- MONTANT: Top-up amount")
-        st.write("- FREQUENCE_RECH: Frequency of recharges by the customer")
-        st.write("- DATA_VOLUME: Volume of data consumed by the customer")
-        st.write("- CHURN: Whether the customer churned or not")
+        st.write("- World Development Indicators")
+        st.write("- Health, Nutrition & Population")
+        st.write("- Population Estimates")
+        st.write("- Statistical Performance Indicators")
+       
 
     with col2:
         st.header("How to Use the App")
-        st.write("* Go to the 'Predictions' page.")
-        st.write("* Enter the customer's information.")
-        st.write("* Click 'Predict'.")
+        st.write("* Click on any of the  'DashBoard' page.")
+        st.write("* Analyse Data by Selecting the input Features.")
+        st.write("* Analyse is grouped in Univariate, Bivariate and Multivariate")
 
         st.header("Source Code")
-        st.markdown("[GitHub Repository](https://github.com/Elphoxa/ChurnGuard-Project.git)")
+        st.markdown("[GitHub Repository](https://github.com/RichieRichMoC/Digital_Health_E_Commerce_Platform_in_Africa_Project)")
 
         st.header("Social Handles")
-        st.write("- [GitHub](https://github.com/Elphoxa)")
-        st.write("- [LinkedIn](https://www.linkedin.com/in/efosa-omosigho)")
+        st.write("- [GitHub](https://github.com/RichieRichMoC)")
+        st.write("- [LinkedIn](https://www.linkedin.com/in/richmond-kantam-97b5b1278/)")
+        st.write("- [Website](https://richierichmoc-consult-2.onrender.com/)")
 
 elif st.session_state.get("authentication_status") is False:
     st.error("🚫 Username/Password is incorrect")
