@@ -14,7 +14,7 @@ st.set_page_config(
 with open('./config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
-# Initialize the authenticator
+# Initialize authenticator (positional args!)
 authenticator = stauth.Authenticate(
     config['credentials'],
     config['cookie']['name'],
@@ -22,8 +22,10 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days']
 )
 
-# Show login widget in sidebar
-authenticator.login(location='sidebar')
+# Sidebar
+with st.sidebar:
+    st.title("📊 Navigation")
+    authenticator.login()
 
 # Check authentication status
 if st.session_state.get("authentication_status"):
@@ -33,13 +35,9 @@ if st.session_state.get("authentication_status"):
 
     # MAIN CONTENT
     st.markdown("<h2 style='color:#0066ff;'>Welcome to the Digital_Health_E_Commerce_Platform_in_Africa_Project Data Analysis </h2>", unsafe_allow_html=True)
-    image_path = './Images/welcomepage.jpeg'
-    st.image(image_path, use_container_width=True, output_format="auto")
-
-    
+    st.image('./Images/welcomepage.jpeg', use_container_width=True, output_format="auto")
 
     col1, col2 = st.columns(2)
-
     with col1:
         st.header("App Information 💬")
         st.write("Access the Data for the Digital_Health_E_Commerce_Platform_in_Africa_Project")
@@ -50,7 +48,6 @@ if st.session_state.get("authentication_status"):
         st.write("- Population Projections")
         st.write("- Statistical Performance Indicators")
        
-
     with col2:
         st.header("How to Use the App")
         st.write("* Click on any of the  'DashBoard' page.")
