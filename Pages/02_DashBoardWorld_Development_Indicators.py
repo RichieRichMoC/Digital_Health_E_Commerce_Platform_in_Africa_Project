@@ -26,7 +26,7 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days']
 )
 
-# ---------------- Auth Check ----------------
+
 if not st.session_state.get("authentication_status"):
     st.info('Please log in to access the application from the MainPage.')
 else:
