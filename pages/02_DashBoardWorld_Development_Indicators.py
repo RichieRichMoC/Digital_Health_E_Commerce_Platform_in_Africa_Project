@@ -1,24 +1,21 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 import plotly.express as px
 import streamlit_authenticator as stauth
 import yaml
 from yaml.loader import SafeLoader
 
-# ---------------- Page Config ----------------
 st.set_page_config(
-    page_title='02_World_Development_Indicators',
+    page_title='Dashboard',
     page_icon='📈',
     layout='wide'
 )
 
-# ---------------- Load Config ----------------
+# Load configuration from YAML file
 with open('./config.yaml') as file:
     config = yaml.load(file, Loader=SafeLoader)
 
+# Initialize Streamlit Authenticator with configuration settings
 authenticator = stauth.Authenticate(
     config['credentials'],
     config['cookie']['name'],
@@ -26,82 +23,86 @@ authenticator = stauth.Authenticate(
     config['cookie']['expiry_days']
 )
 
-
+# Check if the user is authenticated
 if not st.session_state.get("authentication_status"):
     st.info('Please log in to access the application from the MainPage.')
 else:
     def main():
-        # Access dataset from session state
-        data = st.session_state.get("data_key4", None)
+        # Access data from session state
+        data = st.session_state.get("data_key1", None)
 
         if data is None:
             st.info('Please Kindly Access the DataPage to Configure your DataSet.')
         else:
-            st.title("📊 World Development Indicators - Performance Analysis")
+            # Ensure Year is string for plotting
+            if "Year" in data.columns:
+                data["Year_str"] = data["Year"].astype(str)
 
-            # =====================================================
-            # 🔹 Reshape Data (Wide → Long)
-            # =====================================================
-            df_long = pd.melt(
-                data,
-                id_vars=["Country Name", "Country Code", "Series Name", "Series Code"],
-                value_vars=[col for col in data.columns if "YR" in col],
-                var_name="Year",
-                value_name="Value"
-            )
-            df_long["Year"] = df_long["Year"].str.extract(r"(\d{4})").astype(int)
+            # ============================
+            # Country + Series Filter
+            # ============================
+            st.title("Country World Development Indicators Over Time")
 
-            # =====================================================
-            # 📈 Line Trend Over Years
-            # =====================================================
-            st.subheader("📈 Performance Trend Over Years")
-            selected_series = st.selectbox("Select Indicator (Series)", df_long["Series Name"].unique())
+            col1, col2 = st.columns([2, 2])
+            with col1:
+                selected_country = st.selectbox(
+                    "Select Country",
+                    options=data["Country Name"].unique(),
+                    key="country_perf"
+                )
+            with col2:
+                country_data = data[data["Country Name"] == selected_country]
+                if not country_data.empty:
+                    selected_series = st.selectbox(
+                        "Select Series",
+                        options=country_data["Series Name"].unique(),
+                        key="series_filter"
+                    )
+                else:
+                    selected_series = None
 
-            fig = px.line(
-                df_long[df_long["Series Name"] == selected_series],
-                x="Year", y="Value", color="Country Name", markers=True,
-                title=f"Performance Trend of {selected_series}"
-            )
-            st.plotly_chart(fig, use_container_width=True)
+            if selected_series:
+                series_data = country_data[country_data["Series Name"] == selected_series]
 
-            # =====================================================
-            # 🌍 Country Comparison (Bar Chart)
-            # =====================================================
-            st.subheader("🌍 Country Comparison by Year")
-            selected_year = st.selectbox("Select Year", sorted(df_long["Year"].unique()))
-            fig = px.bar(
-                df_long[(df_long["Series Name"] == selected_series) & (df_long["Year"] == selected_year)],
-                x="Country Name", y="Value", color="Country Name",
-                title=f"{selected_series} in {selected_year}"
-            )
-            st.plotly_chart(fig, use_container_width=True)
+                if not series_data.empty:
+                    st.subheader(f"Performance of {selected_country} ({selected_series})")
 
-            # =====================================================
-            # 📊 Histogram of Values
-            # =====================================================
-            st.subheader("📊 Distribution of Values (Histogram)")
-            fig = px.histogram(
-                df_long[df_long["Series Name"] == selected_series],
-                x="Value", color="Country Name", nbins=20,
-                title=f"Distribution of {selected_series} Values"
-            )
-            st.plotly_chart(fig, use_container_width=True)
+                    # Create three side-by-side columns
+                    col_a, col_b, col_c = st.columns(3)
 
-            # =====================================================
-            # 🔗 Correlation Across Years
-            # =====================================================
-            st.subheader("🔗 Correlation Between Years")
-            pivot_df = df_long.pivot_table(
-                index=["Country Name", "Series Name"], columns="Year", values="Value"
-            )
-            corr_matrix = pivot_df.corr()
+                    # --- Bar Chart ---
+                    with col_a:
+                        fig_bar = px.bar(
+                            series_data,
+                            x="Year_str",
+                            y="OBS_VALUE",
+                            title=f"Yearly OBS_VALUE"
+                        )
+                        st.plotly_chart(fig_bar, use_container_width=True)
 
-            plt.figure(figsize=(10, 6))
-            sns.heatmap(corr_matrix, annot=True, cmap="coolwarm", fmt=".2f")
-            plt.title("Correlation Between Years")
-            st.pyplot(plt)
+                    # --- Pie Chart ---
+                    with col_b:
+                        fig_pie = px.pie(
+                            series_data,
+                            names="Year_str",
+                            values="OBS_VALUE",
+                            title=f"OBS_VALUE Share by Year"
+                        )
+                        st.plotly_chart(fig_pie, use_container_width=True)
 
-           
+                    # --- Line Chart ---
+                    with col_c:
+                        fig_line = px.line(
+                            series_data,
+                            x="Year_str",
+                            y="OBS_VALUE",
+                            markers=True,
+                            title=f"OBS_VALUE Trend Over Years"
+                        )
+                        st.plotly_chart(fig_line, use_container_width=True)
+
+                else:
+                    st.warning(f"No data available for {selected_country} in {selected_series}")
 
     if __name__ == '__main__':
         main()

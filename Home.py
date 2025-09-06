@@ -44,9 +44,9 @@ if st.session_state.get("authentication_status"):
 
         st.header("Dataset Information")
         st.write("- World Development Indicators")
-        st.write("- Health, Nutrition & Population")
-        st.write("- Population Projections")
-        st.write("- Statistical Performance Indicators")
+        st.write("- Non Communicable Diseases")
+        st.write("- Population")
+        st.write("- Technology Performance Indicators")
        
     with col2:
         st.header("How to Use the App")

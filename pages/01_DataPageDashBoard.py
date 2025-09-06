@@ -73,10 +73,10 @@ else:
         st.session_state[DATA_KEY4] = df4
 
     # Show all datasets with Series Name selection
-    show_dataset("World Development Indicators", df4, "df4")
+    show_dataset("World Development Indicators", df1, "df1")
     st.divider()
-    show_dataset("Health, Nutrition & Population", df1, "df1")
+    show_dataset("Statistic on Non Communicable Disease", df2, "df2")
     st.divider()
-    show_dataset("Population Projections", df2, "df2")
+    show_dataset("Population Segregation", df3, "df3")
     st.divider()
-    show_dataset("Statistical Performance Indicators", df3, "df3")
+    show_dataset("Technology Performance Indicators", df4, "df4")
